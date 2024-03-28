@@ -3,9 +3,9 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"log"
-	"tuaysa.com/internal/routes"
 	"tuaysa.com/pkg/config"
 	"tuaysa.com/pkg/db"
+	"tuaysa.com/routes"
 )
 
 // @title Tuaysa API
