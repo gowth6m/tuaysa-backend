@@ -1,0 +1,17 @@
+basePath: /v0
+host: api.tuaysa.com
+info:
+  contact: {}
+  description: This is the REST API for Tuaysa.
+  title: Tuaysa API
+  version: "0"
+paths: {}
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
