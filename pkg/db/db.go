@@ -9,10 +9,12 @@ import (
 	"tuaysa.com/pkg/config"
 )
 
-const DATABASE_NAME = "tuaysa-backend"
+const DATABASE_NAME = "tuaysa"
 const COLLECTION_USERS = "users"
 const COLLECTION_PRODUCTS = "products"
 const COLLECTION_ORDERS = "orders"
+const COLLECTION_CATEGORIES = "categories"
+const COLLECTION_SHOPS = "shops"
 
 var Client *mongo.Client
 var isConnected bool = false

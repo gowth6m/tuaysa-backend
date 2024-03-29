@@ -1,11 +1,153 @@
 basePath: /v0
+definitions:
+  product.CreateProductRequest:
+    properties:
+      category:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      sellerId:
+        type: string
+      variants:
+        items:
+          $ref: '#/definitions/product.CreateVariantRequest'
+        type: array
+    required:
+    - category
+    - name
+    - sellerId
+    - variants
+    type: object
+  product.CreateVariantRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      stock:
+        type: integer
+    required:
+    - name
+    - price
+    - stock
+    type: object
+  product.ProductResponse:
+    properties:
+      category:
+        type: string
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      seller:
+        type: string
+      updatedAt:
+        type: string
+      variants:
+        items:
+          $ref: '#/definitions/product.VariantResponse'
+        type: array
+    type: object
+  product.VariantResponse:
+    properties:
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      stock:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
 host: api.tuaysa.com
 info:
   contact: {}
   description: This is the REST API for Tuaysa.
   title: Tuaysa API
   version: "0"
-paths: {}
+paths:
+  /product/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new product
+      parameters:
+      - description: Product object to be created
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/product.CreateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Product created successfully
+          schema:
+            $ref: '#/definitions/product.ProductResponse'
+        "400":
+          description: Invalid request format or parameters
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a new product
+      tags:
+      - products
+  /product/createMany:
+    post:
+      consumes:
+      - application/json
+      description: Create many products
+      parameters:
+      - description: Products to be created
+        in: body
+        name: products
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/product.CreateProductRequest'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Products created successfully
+          schema:
+            items:
+              $ref: '#/definitions/product.ProductResponse'
+            type: array
+        "400":
+          description: Invalid request format or parameters
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create many products
+      tags:
+      - products
 schemes:
 - http
 - https

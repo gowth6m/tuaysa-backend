@@ -12,7 +12,221 @@
     },
     "host": "api.tuaysa.com",
     "basePath": "/v0",
-    "paths": {},
+    "paths": {
+        "/product/create": {
+            "post": {
+                "description": "Create a new product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Create a new product",
+                "parameters": [
+                    {
+                        "description": "Product object to be created",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/product.CreateProductRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Product created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/product.ProductResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request format or parameters",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/product/createMany": {
+            "post": {
+                "description": "Create many products",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Create many products",
+                "parameters": [
+                    {
+                        "description": "Products to be created",
+                        "name": "products",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/product.CreateProductRequest"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Products created successfully",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/product.ProductResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request format or parameters",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "product.CreateProductRequest": {
+            "type": "object",
+            "required": [
+                "category",
+                "name",
+                "sellerId",
+                "variants"
+            ],
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "sellerId": {
+                    "type": "string"
+                },
+                "variants": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.CreateVariantRequest"
+                    }
+                }
+            }
+        },
+        "product.CreateVariantRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "price",
+                "stock"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "stock": {
+                    "type": "integer"
+                }
+            }
+        },
+        "product.ProductResponse": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "seller": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "variants": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.VariantResponse"
+                    }
+                }
+            }
+        },
+        "product.VariantResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "stock": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        }
+    },
     "securityDefinitions": {
         "BearerAuth": {
             "type": "apiKey",

@@ -37,6 +37,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	versionControlled := router.Group("/" + config.AppConfig().App.ApiVersion)
 	{
 		routes.DefaultRoutes(versionControlled)
+		routes.ProductRoutes(versionControlled)
 	}
 
 	router.ServeHTTP(w, r)
