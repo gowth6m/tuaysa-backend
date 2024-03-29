@@ -37,6 +37,8 @@ func main() {
 	{
 		routes.DefaultRoutes(versionControlled)
 		routes.ProductRoutes(versionControlled)
+		routes.ShopRoutes(versionControlled)
+		routes.UserRoutes(versionControlled)
 	}
 
 	router.Run(config.AppConfig().App.Host + config.AppConfig().App.Port)

@@ -73,6 +73,73 @@ definitions:
       updatedAt:
         type: string
     type: object
+  shop.CreateShopRequest:
+    properties:
+      address:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      ownerId:
+        type: string
+    required:
+    - name
+    - ownerId
+    type: object
+  shop.ShopResponse:
+    properties:
+      address:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      ownerId:
+        type: string
+      products:
+        items:
+          $ref: '#/definitions/product.ProductResponse'
+        type: array
+      updatedAt:
+        type: string
+    type: object
+  user.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  user.UserResponse:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    type: object
 host: api.tuaysa.com
 info:
   contact: {}
@@ -148,6 +215,114 @@ paths:
       summary: Create many products
       tags:
       - products
+  /shop/all:
+    post:
+      consumes:
+      - application/json
+      description: Get all shops
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Shops retrieved successfully
+          schema:
+            items:
+              $ref: '#/definitions/shop.ShopResponse'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all shops
+      tags:
+      - shops
+  /shop/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new shop
+      parameters:
+      - description: Shop object to be created
+        in: body
+        name: shop
+        required: true
+        schema:
+          $ref: '#/definitions/shop.CreateShopRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Shop created successfully
+          schema:
+            $ref: '#/definitions/shop.ShopResponse'
+        "400":
+          description: Invalid request format or parameters
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a new shop
+      tags:
+      - shops
+  /user/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Users retrieved successfully
+          schema:
+            items:
+              $ref: '#/definitions/user.UserResponse'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all users
+      tags:
+      - users
+  /user/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: User object to be created
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User created successfully
+          schema:
+            $ref: '#/definitions/user.UserResponse'
+        "400":
+          description: Invalid request format or parameters
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a new user
+      tags:
+      - users
 schemes:
 - http
 - https

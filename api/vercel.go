@@ -38,6 +38,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	{
 		routes.DefaultRoutes(versionControlled)
 		routes.ProductRoutes(versionControlled)
+		routes.ShopRoutes(versionControlled)
+		routes.UserRoutes(versionControlled)
 	}
 
 	router.ServeHTTP(w, r)

@@ -15,7 +15,7 @@ import (
 
 var jwtSecret = []byte(config.AppConfig().Auth.JWTSecret)
 
-func GenerateJWTToken(email string, accountType models.UserType) (string, error) {
+func GenerateJWTToken(email string, accountType user.UserType) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	// Create a map to store our claims
@@ -89,7 +89,7 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 func IsAdmin() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		accountType := c.GetString("accountType")
-		if accountType != string(models.AdminUser) {
+		if accountType != string(user.AdminUser) {
 			response.Error(c, http.StatusUnauthorized, "Unauthorized")
 			return
 		}
