@@ -2,30 +2,29 @@ package middleware
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt"
 	"net/http"
 	"strings"
 	"time"
-
-	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt"
 	"tuaysa.com/pkg/config"
 	"tuaysa.com/pkg/response"
-	"tuaysa.com/services/user"
 )
 
 var jwtSecret = []byte(config.AppConfig().Auth.JWTSecret)
 
-func GenerateJWTToken(email string, accountType user.UserType) (string, error) {
+func GenerateJWTToken(email string, username string) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	// Create a map to store our claims
 	claims := token.Claims.(jwt.MapClaims)
 
 	// Set token claims
-	claims["iss"] = "tuaysa.com"
-	claims["accountType"] = accountType
+	claims["iss"] = config.AppConfig().Auth.JWTIssuer
 	claims["email"] = email
+	claims["username"] = username
 	claims["exp"] = time.Now().Add(time.Hour * time.Duration(config.AppConfig().Auth.JWTExpireInHours)).Unix()
+	claims["iat"] = time.Now().Unix()
 
 	tokenString, err := token.SignedString(jwtSecret)
 	return tokenString, err
@@ -43,16 +42,12 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 		}
 
 		tokenString := authHeader[len(BearerSchema):]
-		fmt.Println("->" + tokenString)
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 			}
 			return []byte(jwtSecret), nil
 		})
-
-		fmt.Println(token)
-		fmt.Println(err)
 
 		if err != nil {
 			var errMsg string
@@ -81,18 +76,6 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		c.Next()
-	}
-}
-
-// Check if the user is an admin
-func IsAdmin() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		accountType := c.GetString("accountType")
-		if accountType != string(user.AdminUser) {
-			response.Error(c, http.StatusUnauthorized, "Unauthorized")
-			return
-		}
 		c.Next()
 	}
 }

@@ -11,7 +11,8 @@ type Account struct {
 }
 
 type Claims struct {
-	Email string `json:"email"`
+	Email    string `json:"email"`
+	Username string `json:"username"`
 	jwt.StandardClaims
 }
 
@@ -56,6 +57,11 @@ type UserResponse struct {
 	Phone     string `json:"phone,omitempty"`
 }
 
+type LoginResponse struct {
+	Token string `json:"token"`
+	User  UserResponse
+}
+
 // ---------------------------------------------------------------------------------------------------
 // ------------------------------------------ MONGO OBJECTS ------------------------------------------
 // ---------------------------------------------------------------------------------------------------
@@ -64,9 +70,9 @@ type User struct {
 	Username        string              `json:"username,omitempty" bson:"username,omitempty" validate:"required"`
 	Password        string              `json:"-" bson:"password,omitempty" validate:"required"`
 	Email           string              `json:"email" bson:"email" validate:"required,email"`
-	FirstName       string             `json:"firstName,omitempty" bson:"firstName,omitempty"`
-	LastName        string             `json:"lastName,omitempty" bson:"lastName,omitempty"`
-	Phone           string             `json:"phone,omitempty" bson:"phone,omitempty"`
+	FirstName       string              `json:"firstName,omitempty" bson:"firstName,omitempty"`
+	LastName        string              `json:"lastName,omitempty" bson:"lastName,omitempty"`
+	Phone           string              `json:"phone,omitempty" bson:"phone,omitempty"`
 	ShippingAddress *primitive.ObjectID `json:"shippingAddress,omitempty" bson:"shippingAddress,omitempty"`
 	Shop            *primitive.ObjectID `json:"shop,omitempty" bson:"shop,omitempty"`
 	CreatedAt       primitive.DateTime  `json:"createdAt,omitempty" bson:"createdAt,omitempty"`

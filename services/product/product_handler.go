@@ -23,6 +23,7 @@ func NewProductHandler(repo ProductRepository) *ProductHandler {
 // @Success 201 {object} ProductResponse "Product created successfully"
 // @Failure 400 {object} map[string]interface{} "Invalid request format or parameters"
 // @Failure 500 {object} map[string]interface{} "Internal server error"
+// @Security BearerAuth
 // @Router /product/create [post]
 func (h *ProductHandler) CreateProduct(c *gin.Context) {
 	var reqPayload CreateProductRequest
@@ -55,6 +56,7 @@ func (h *ProductHandler) CreateProduct(c *gin.Context) {
 // @Success 201 {object} []ProductResponse "Products created successfully"
 // @Failure 400 {object} map[string]interface{} "Invalid request format or parameters"
 // @Failure 500 {object} map[string]interface{} "Internal server error"
+// @Security BearerAuth
 // @Router /product/createMany [post]
 func (h *ProductHandler) CreateManyProduct(c *gin.Context) {
 	var reqPayload []CreateProductRequest
@@ -81,4 +83,22 @@ func (h *ProductHandler) CreateManyProduct(c *gin.Context) {
 	}
 
 	response.Success(c, http.StatusCreated, "Created products successfully", createdProduct)
+}
+
+// @Summary Get all products
+// @Description Get all products
+// @Tags products
+// @Accept json
+// @Produce json
+// @Success 200 {object} []ProductResponse "Products retrieved successfully"
+// @Failure 500 {object} map[string]interface{} "Internal server error"
+// @Router /product/all [get]
+func (h *ProductHandler) GetAllProducts(c *gin.Context) {
+	products, err := h.Repo.GetAllProducts(c.Request.Context())
+	if err != nil {
+		response.Error(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	response.Success(c, http.StatusOK, "Retrieved products successfully", products)
 }

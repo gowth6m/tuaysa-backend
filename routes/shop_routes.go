@@ -15,10 +15,6 @@ func ShopRoutes(group *gin.RouterGroup) {
 	shopGroup := group.Group("/shop")
 
 	// --- PUBLIC ROUTES ---
-	shopGroup.POST("/create", func(c *gin.Context) {
-		shopHandler.CreateShop(c)
-	})
-
 	shopGroup.GET("/all", func(c *gin.Context) {
 		shopHandler.GetAllShops(c)
 	})
@@ -26,7 +22,9 @@ func ShopRoutes(group *gin.RouterGroup) {
 	// --- PROTECTED ROUTES ---
 	shopGroup.Use(middleware.JWTAuthMiddleware())
 	{
-
+		shopGroup.POST("/create", func(c *gin.Context) {
+			shopHandler.CreateShop(c)
+		})
 	}
 
 }

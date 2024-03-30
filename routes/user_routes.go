@@ -23,10 +23,24 @@ func UserRoutes(group *gin.RouterGroup) {
 		userHandler.GetAllUsers(c)
 	})
 
+	userGroup.GET("/email/:email", func(c *gin.Context) {
+		userHandler.GetUserByEmail(c)
+	})
+
+	userGroup.GET("/:username", func(c *gin.Context) {
+		userHandler.GetUserByUsername(c)
+	})
+
+	userGroup.POST("/login", func(c *gin.Context) {
+		userHandler.LoginUser(c)
+	})
+
 	// --- PROTECTED ROUTES ---
 	userGroup.Use(middleware.JWTAuthMiddleware())
 	{
-
+		userGroup.GET("/current", func(c *gin.Context) {
+			userHandler.GetCurrentUser(c)
+		})
 	}
 
 }

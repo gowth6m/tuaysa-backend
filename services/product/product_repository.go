@@ -3,6 +3,7 @@ package product
 import (
 	"context"
 	"errors"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"tuaysa.com/pkg/db"
@@ -11,6 +12,7 @@ import (
 type ProductRepository interface {
 	CreateProduct(c context.Context, product Product) (Product, error)
 	CreateManyProduct(c context.Context, products []Product) ([]Product, error)
+	GetAllProducts(c context.Context) ([]Product, error)
 }
 
 type repositoryImpl struct {
@@ -54,6 +56,22 @@ func (r *repositoryImpl) CreateManyProduct(c context.Context, products []Product
 		if oid, ok := id.(primitive.ObjectID); ok {
 			products[i].ID = oid
 		}
+	}
+
+	return products, nil
+}
+
+// GetAllProducts retrieves all products from the database.
+func (r *repositoryImpl) GetAllProducts(c context.Context) ([]Product, error) {
+	cursor, err := r.collection.Find(c, bson.M{})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(c)
+
+	var products []Product
+	if err := cursor.All(c, &products); err != nil {
+		return nil, err
 	}
 
 	return products, nil

@@ -21,6 +21,7 @@ type Config struct {
 		JWTExpireInHours int    `envconfig:"JWT_EXPIRE" default:"24"`
 		TokenExpire      int    `envconfig:"TOKEN_EXPIRE" default:"60"`
 		ShortTokenExpire int    `envconfig:"SHORT_TOKEN_EXPIRE" default:"15"`
+		JWTIssuer        string `envconfig:"JWT_ISSUER" default:"tuaysa.com"`
 	}
 	Cors struct {
 		AllowOrigins     []string `envconfig:"CORS_ALLOW_ORIGINS" default:"*"`

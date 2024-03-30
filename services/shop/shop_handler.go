@@ -23,6 +23,7 @@ func NewShopHandler(repo ShopRepository) *ShopHandler {
 // @Success 201 {object} ShopResponse "Shop created successfully"
 // @Failure 400 {object} map[string]interface{} "Invalid request format or parameters"
 // @Failure 500 {object} map[string]interface{} "Internal server error"
+// @Security BearerAuth
 // @Router /shop/create [post]
 func (h *ShopHandler) CreateShop(c *gin.Context) {
 	var reqPayload CreateShopRequest

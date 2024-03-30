@@ -12,6 +12,9 @@ import (
 type UserRepository interface {
 	CreateUser(c context.Context, user User) (User, error)
 	GetAllUsers(c context.Context) ([]User, error)
+	GetUserByID(c context.Context, id primitive.ObjectID) (*User, error)
+	GetUserByEmail(c context.Context, email string) (*User, error)
+	GetUserByUsername(c context.Context, username string) (*User, error)
 }
 
 type repositoryImpl struct {
@@ -60,4 +63,40 @@ func (r *repositoryImpl) GetAllUsers(c context.Context) ([]User, error) {
 	}
 
 	return users, nil
+}
+
+func (r *repositoryImpl) GetUserByID(c context.Context, id primitive.ObjectID) (*User, error) {
+	filter := bson.M{"_id": id}
+
+	var user User
+	err := r.collection.FindOne(c, filter).Decode(&user)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func (r *repositoryImpl) GetUserByEmail(c context.Context, email string) (*User, error) {
+	filter := bson.M{"email": email}
+
+	var user User
+	err := r.collection.FindOne(c, filter).Decode(&user)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func (r *repositoryImpl) GetUserByUsername(c context.Context, username string) (*User, error) {
+	filter := bson.M{"username": username}
+
+	var user User
+	err := r.collection.FindOne(c, filter).Decode(&user)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }

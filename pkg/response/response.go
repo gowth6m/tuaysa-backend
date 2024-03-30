@@ -20,9 +20,10 @@ func JSON(c *gin.Context, statusCode int, message string, data interface{}) {
 	})
 }
 
-// Error is a convenience function to send error messages
+// Error is a convenience function to send error messages in JSON format
 func Error(c *gin.Context, statusCode int, message string) {
 	JSON(c, statusCode, message, nil)
+	c.Abort()
 }
 
 // Success is a convenience function to send success responses

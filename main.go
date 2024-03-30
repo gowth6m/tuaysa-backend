@@ -13,7 +13,7 @@ import (
 // @description This is the REST API for Tuaysa.
 // @host api.tuaysa.com
 // @BasePath /v0
-// @schemes http https
+// @schemes https
 // @securityDefinitions.apikey BearerAuth
 // @in header
 // @name Authorization

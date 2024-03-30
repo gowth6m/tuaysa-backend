@@ -15,22 +15,20 @@ func ProductRoutes(group *gin.RouterGroup) {
 	productGroup := group.Group("/product")
 
 	// --- PUBLIC ROUTES ---
-	productGroup.POST("/create", func(c *gin.Context) {
-		productHandler.CreateProduct(c)
-	})
-
-	productGroup.POST("/createMany", func(c *gin.Context) {
-		productHandler.CreateManyProduct(c)
-	})
-
-	productGroup.POST("/all", func(c *gin.Context) {
-
+	productGroup.GET("/all", func(c *gin.Context) {
+		productHandler.GetAllProducts(c)
 	})
 
 	// --- PROTECTED ROUTES ---
 	productGroup.Use(middleware.JWTAuthMiddleware())
 	{
+		productGroup.POST("/create", func(c *gin.Context) {
+			productHandler.CreateProduct(c)
+		})
 
+		productGroup.POST("/createMany", func(c *gin.Context) {
+			productHandler.CreateManyProduct(c)
+		})
 	}
 
 }
